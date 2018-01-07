@@ -51,7 +51,6 @@ export default class Sphere extends THREE.Object3D {
   }
 
 
-
   update(time) {
 
     this.material.uniforms.uTime.value = time;
