@@ -16,8 +16,10 @@ export default class Webgl {
     this.renderer.setClearColor( 0x262626 );
 
     this.controls = new OrbitControls( this.camera );
-
     this.composer = null;
+
+    this.spheres = [];
+    this.spheresNb = 10;
 
     this.createLights()
     this.createMeshes()
@@ -33,13 +35,25 @@ export default class Webgl {
 
     this.directionalLightHelper = new THREE.DirectionalLightHelper( this.directionalLight, 5 );
     this.scene.add(this.directionalLightHelper)
-
-    // this.scene.fog = new THREE.FogExp2(0xffffff, .01)
   }
 
   createMeshes() {
-    this.sphere = new Sphere();
-    this.scene.add( this.sphere );
+
+    const sphere = new Sphere(0);
+    this.spheres.push(sphere)
+    this.scene.add( sphere );
+
+    for (let i = 1; i < this.spheresNb; i++) {
+      const sphere = new Sphere(i);
+      sphere.position.x = THREE.Math.randFloat(-100, 100)
+      sphere.position.y = THREE.Math.randFloat(-100, 100)
+      sphere.position.z = THREE.Math.randFloat(-100, 100)
+      const scale = THREE.Math.randFloat(.3, 1)
+      sphere.scale.set(scale, scale, scale)
+      this.spheres.push(sphere)
+      this.scene.add( sphere );
+    }
+
   }
 
   resize( width, height ) {
@@ -57,6 +71,8 @@ export default class Webgl {
     const time = performance.now()
 
     this.renderer.render( this.scene, this.camera );
-    this.sphere.update(time);
+    for (let i = 0; i < this.spheres.length; i++) {
+      this.spheres[i].update(time)
+    }
   }
 }
