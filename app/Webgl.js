@@ -19,7 +19,22 @@ export default class Webgl {
 
     this.composer = null;
 
+    this.createLights()
     this.createMeshes()
+  }
+
+  createLights() {
+    this.ambientLight = new THREE.AmbientLight( 0xdedede ); // soft white light
+    this.scene.add( this.ambientLight );
+
+    this.directionalLight = new THREE.DirectionalLight( 0xff0000 );
+    this.directionalLight.position.set(0, 50, 0)
+    this.scene.add( this.directionalLight );
+
+    this.directionalLightHelper = new THREE.DirectionalLightHelper( this.directionalLight, 5 );
+    this.scene.add(this.directionalLightHelper)
+
+    // this.scene.fog = new THREE.FogExp2(0xffffff, .01)
   }
 
   createMeshes() {
